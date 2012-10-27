@@ -26,7 +26,7 @@ namespace EFT.Models.Mapping
             this.HasRequired(t => t.Contact)
                 .WithMany(t => t.Projects)
                 .HasForeignKey(d => d.CreatorID);
-            this.HasRequired(t => t.Contact1)
+            this.HasOptional(t => t.Contact1)
                 .WithMany(t => t.Projects1)
                 .HasForeignKey(d => d.MaintainerID);
 

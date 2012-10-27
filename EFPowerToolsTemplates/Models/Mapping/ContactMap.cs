@@ -19,6 +19,18 @@ namespace EFT.Models.Mapping
             this.ToTable("Contacts");
             this.Property(t => t.ContactID).HasColumnName("ContactID");
             this.Property(t => t.Name).HasColumnName("Name");
+
+            // Relationships
+            this.HasMany(t => t.Projects2)
+                .WithMany(t => t.Contacts)
+                .Map(m =>
+                    {
+                        m.ToTable("Favorites");
+                        m.MapLeftKey("ContactID");
+                        m.MapRightKey("ProjectID");
+                    });
+
+
         }
     }
 }

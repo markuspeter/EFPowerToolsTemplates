@@ -10,6 +10,7 @@ namespace EFT.Models
             this.Members = new List<Member>();
             this.Projects = new List<Project>();
             this.Projects1 = new List<Project>();
+            this.Projects2 = new List<Project>();
         }
 
         public int ContactID { get; set; }
@@ -17,5 +18,6 @@ namespace EFT.Models
         public virtual ICollection<Member> Members { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Project> Projects1 { get; set; }
+        public virtual ICollection<Project> Projects2 { get; set; }
     }
 }

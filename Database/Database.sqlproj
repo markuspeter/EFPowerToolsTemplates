@@ -62,5 +62,6 @@
     <Build Include="dbo\Tables\Contacts.sql" />
     <Build Include="dbo\Tables\Projects.sql" />
     <Build Include="dbo\Tables\Members.sql" />
+    <Build Include="dbo\Tables\Favorites.sql" />
   </ItemGroup>
 </Project>
