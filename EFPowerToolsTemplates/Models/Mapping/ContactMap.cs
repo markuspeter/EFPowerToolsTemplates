@@ -21,8 +21,8 @@ namespace EFT.Models.Mapping
             this.Property(t => t.Name).HasColumnName("Name");
 
             // Relationships
-            this.HasMany(t => t.Projects2)
-                .WithMany(t => t.Contacts)
+            this.HasMany(t => t.FavoritesProjects)
+                .WithMany(t => t.FavoritesContacts)
                 .Map(m =>
                     {
                         m.ToTable("Favorites");

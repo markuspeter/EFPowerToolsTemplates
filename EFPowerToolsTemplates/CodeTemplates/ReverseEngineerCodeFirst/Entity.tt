@@ -27,7 +27,7 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
         foreach (var navProperty in collectionNavigations)
         {
 #>
-            this.<#= code.Escape(navProperty) #> = new List<<#= code.Escape(navProperty.ToEndMember.GetEntityType()) #>>();
+            this.<#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #> = new List<<#= code.Escape(navProperty.ToEndMember.GetEntityType()) #>>();
 <#
         }
 #>
@@ -48,16 +48,32 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
         if (navProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
         {
 #>
-        public virtual ICollection<<#= code.Escape(navProperty.ToEndMember.GetEntityType()) #>> <#= code.Escape(navProperty) #> { get; set; }
+        public virtual ICollection<<#= code.Escape(navProperty.ToEndMember.GetEntityType()) #>> <#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #> { get; set; }
 <#
         }
         else
         {
 #>
-        public virtual <#= code.Escape(navProperty.ToEndMember.GetEntityType()) #> <#= code.Escape(navProperty) #> { get; set; }
+        public virtual <#= code.Escape(navProperty.ToEndMember.GetEntityType()) #> <#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #> { get; set; }
 <#
         }
     }
 #>
     }
 }
+<#+
+public string GetPropertyNameForNavigationProperty(NavigationProperty navigationProperty)
+{
+    var ForeignKeyName = navigationProperty.RelationshipType.Name.Split('_');
+	var propertyName = ForeignKeyName[ForeignKeyName.Length-1];
+	if (navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
+	{
+		propertyName = propertyName + navigationProperty.ToEndMember.Name;
+	}
+	else
+	{
+		propertyName = propertyName + navigationProperty.ToEndMember.GetEntityType().Name;
+	}
+    return propertyName;
+}
+#>

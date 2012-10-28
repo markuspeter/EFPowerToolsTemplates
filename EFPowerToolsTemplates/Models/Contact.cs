@@ -7,17 +7,17 @@ namespace EFT.Models
     {
         public Contact()
         {
-            this.Members = new List<Member>();
-            this.Projects = new List<Project>();
-            this.Projects1 = new List<Project>();
-            this.Projects2 = new List<Project>();
+            this.ContactMembers = new List<Member>();
+            this.CreatorProjects = new List<Project>();
+            this.MaintainerProjects = new List<Project>();
+            this.FavoritesProjects = new List<Project>();
         }
 
         public int ContactID { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Member> Members { get; set; }
-        public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Project> Projects1 { get; set; }
-        public virtual ICollection<Project> Projects2 { get; set; }
+        public virtual ICollection<Member> ContactMembers { get; set; }
+        public virtual ICollection<Project> CreatorProjects { get; set; }
+        public virtual ICollection<Project> MaintainerProjects { get; set; }
+        public virtual ICollection<Project> FavoritesProjects { get; set; }
     }
 }

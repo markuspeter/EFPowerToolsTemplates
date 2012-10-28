@@ -8,7 +8,7 @@ namespace EFT.Models
         public int ContactID { get; set; }
         public int ProjectID { get; set; }
         public System.DateTime JoinedOn { get; set; }
-        public virtual Contact Contact { get; set; }
-        public virtual Project Project { get; set; }
+        public virtual Contact ContactContact { get; set; }
+        public virtual Project ProjectProject { get; set; }
     }
 }
