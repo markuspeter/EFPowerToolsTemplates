@@ -24,11 +24,11 @@ namespace EFT.Models.Mapping
             this.Property(t => t.JoinedOn).HasColumnName("JoinedOn");
 
             // Relationships
-            this.HasRequired(t => t.Contact)
-                .WithMany(t => t.Members)
+            this.HasRequired(t => t.ContactIDContact)
+                .WithMany(t => t.ContactIDMembers)
                 .HasForeignKey(d => d.ContactID);
-            this.HasRequired(t => t.Project)
-                .WithMany(t => t.Members)
+            this.HasRequired(t => t.ProjectIDProject)
+                .WithMany(t => t.ProjectIDMembers)
                 .HasForeignKey(d => d.ProjectID);
 
         }

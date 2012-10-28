@@ -23,11 +23,11 @@ namespace EFT.Models.Mapping
             this.Property(t => t.MaintainerID).HasColumnName("MaintainerID");
 
             // Relationships
-            this.HasRequired(t => t.Contact)
-                .WithMany(t => t.Projects)
+            this.HasRequired(t => t.CreatorIDContact)
+                .WithMany(t => t.CreatorIDProjects)
                 .HasForeignKey(d => d.CreatorID);
-            this.HasOptional(t => t.Contact1)
-                .WithMany(t => t.Projects1)
+            this.HasOptional(t => t.MaintainerIDContact)
+                .WithMany(t => t.MaintainerIDProjects)
                 .HasForeignKey(d => d.MaintainerID);
 
         }

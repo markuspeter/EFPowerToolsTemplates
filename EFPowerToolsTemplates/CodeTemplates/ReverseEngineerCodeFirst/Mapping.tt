@@ -187,8 +187,8 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
             var rightKeyMappings = mapping.Item2[otherNavProperty.FromEndMember];
             var rightColumns = string.Join(", ", rightType.KeyMembers.Select(m => "\"" + rightKeyMappings[m] + "\""));
 #>
-            this.HasMany(t => t.<#= code.Escape(navProperty) #>)
-                .WithMany(t => t.<#= code.Escape(otherNavProperty) #>)
+            this.HasMany(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #>)
+                .WithMany(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(otherNavProperty)) #>)
                 .Map(m =>
                     {
 <#
@@ -220,20 +220,20 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
             if (navProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.One)
             {
 #>
-            this.HasRequired(t => t.<#= code.Escape(navProperty) #>)
+            this.HasRequired(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #>)
 <#
             }
             else
             {
 #>
-            this.HasOptional(t => t.<#= code.Escape(navProperty) #>)
+            this.HasOptional(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(navProperty)) #>)
 <#
             }
                 
             if(navProperty.FromEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
             {
 #>
-                .WithMany(t => t.<#= code.Escape(otherNavProperty) #>)
+                .WithMany(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(otherNavProperty)) #>)
 <#
                 if(association.ReferentialConstraints.Single().ToProperties.Count == 1)
                 {
@@ -254,7 +254,7 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
                 //       as EDMGen will never create an optional:optional relationship
                 // 		 because everything is one:many except PK-PK relationships which must be required
 #>
-                .WithOptional(t => t.<#= code.Escape(otherNavProperty) #>);
+                .WithOptional(t => t.<#= code.Escape(GetPropertyNameForNavigationProperty(otherNavProperty)) #>);
 <#	
                 }
             }
@@ -266,3 +266,35 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
         }
     }
 }
+<#+
+public string GetPropertyNameForNavigationProperty(NavigationProperty navigationProperty)
+{
+    var propertyName = "";
+    if(navigationProperty.ToEndMember.RelationshipMultiplicity  == RelationshipMultiplicity.Many
+        && navigationProperty.FromEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
+    {
+        propertyName = navigationProperty.RelationshipType.Name;
+    }
+    else
+    {
+        var association = (AssociationType)navigationProperty.RelationshipType;
+        if(association.ReferentialConstraints.Single().ToProperties.Count == 1)
+        {
+            propertyName = association.ReferentialConstraints.Single().ToProperties.Single().Name;
+        }
+        else
+        {
+            propertyName = string.Join("", association.ReferentialConstraints.Single().ToProperties.Select(p => p.Name));
+        }
+    }
+    if (navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
+    {
+        propertyName = propertyName + navigationProperty.ToEndMember.Name;
+    }
+    else
+    {
+        propertyName = propertyName + navigationProperty.ToEndMember.GetEntityType().Name;
+    }
+    return propertyName;
+}
+#>
