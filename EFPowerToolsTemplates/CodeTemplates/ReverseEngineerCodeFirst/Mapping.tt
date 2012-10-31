@@ -7,6 +7,8 @@
 //  - All associations expose FKs (except many:many)
 #>
 <#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Data.Entity.Design" #>
+<#@import namespace="System.Data.Entity.Design.PluralizationServices" #>
 <#@ include file="EF.Utility.CS.ttinclude" #><#@
  output extension=".cs" #><#
 
@@ -267,6 +269,8 @@ namespace <#= code.EscapeNamespace(efHost.Namespace) #>
     }
 }
 <#+
+PluralizationService pluralizer = PluralizationService.CreateService(System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+
 public string GetPropertyNameForNavigationProperty(NavigationProperty navigationProperty)
 {
     var propertyName = "";
@@ -289,7 +293,7 @@ public string GetPropertyNameForNavigationProperty(NavigationProperty navigation
     }
     if (navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
     {
-        propertyName = propertyName + navigationProperty.ToEndMember.Name;
+        propertyName = propertyName + pluralizer.Pluralize(navigationProperty.ToEndMember.Name);
     }
     else
     {
